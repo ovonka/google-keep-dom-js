@@ -159,7 +159,9 @@
   .form-actions .tooltip{
     margin-right: 10px;
   }
-  
+  .active-form{
+    display: none;
+  }
   .active-form form{
     display: flex;
     flex-direction: column;
