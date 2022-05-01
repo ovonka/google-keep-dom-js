@@ -13,6 +13,7 @@ class Note {
       this.$inactiveForm = document.querySelector(".inactive-form");
       this.$noteTitle = document.querySelector("#note-title");
       this.$noteText = document.querySelector("#note-text");
+      this.$notes = document.querySelector(".notes");
      this.addEventListeners();
     }
     addEventListeners(){
@@ -24,19 +25,38 @@ class Note {
     handleFormClick(event){
         const isActiveFormClickedOn = this.$activeForm.contains(event.target);
         const isInActiveFormClickedOn = this.$inactiveForm.contains(event.target);
+        const title = this.$noteTitle.value;
+        const text = this.$noteText.value;
         
         if(isInActiveFormClickedOn) {
-            this.$inactiveForm.style.display = "none";
-            this.$activeForm.style.display = "block";
-            this.$noteText.focus();
+         this.openActiveForm();
+        }
+        else if (!isActiveFormClickedOn) {
+        this.addNote({title , text});
+        this.closeActiveForm();
+
         }
        
     }
-    
+    openActiveForm(){
+        this.$inactiveForm.style.display = "none";
+        this.$activeForm.style.display = "block";
+        this.$noteText.focus();
+    }
+    closeActiveForm(){
+        this.$activeForm.style.display = "none";
+        this.$inactiveForm.style.display = "block";
+        this.$noteText.value = "";
+        this.$noteTitle.value = "";
+    }
+
   
-    addNote(id, { title, text }) {
-      const newNote = new Note(id, title, text);
-      this.notes = [...this.notes, newNote];
+    addNote({ title, text }) {
+        if(text != "") {
+            const newNote = new Note(cuid(), title, text);
+            this.notes = [...this.notes, newNote];
+            this.displayNotes();
+        }
     }
   
     editNote(id, { title, text }) {
@@ -54,13 +74,53 @@ class Note {
     }
   
     displayNotes() {
-      this.notes.map((note) =>
-        console.log(`
-        ID: ${note.id}
-        Title: ${note.title}
-        Text: ${note.text}
-      `)
-      );
+      this.$notes.innerHTML = this.notes.map((note) =>
+        `
+        <div class="note" id="${note.id}">
+          <span class="material-icons check-circle">check_circle</span>
+          <div class="title">${note.title}</div>
+          <div class="text">${note.text}</div>
+          <div class="note-footer">
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >add_alert</span
+              >
+              <span class="tooltip-text">Remind me</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >person_add</span
+              >
+              <span class="tooltip-text">Collaborator</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >palette</span
+              >
+              <span class="tooltip-text">Change Color</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >image</span
+              >
+              <span class="tooltip-text">Add Image</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >archive</span
+              >
+              <span class="tooltip-text">Archive</span>
+            </div>
+            <div class="tooltip">
+              <span class="material-icons-outlined hover small-icon"
+                >more_vert</span
+              >
+              <span class="tooltip-text">More</span>
+            </div>
+          </div>
+        </div>
+      `
+      ).join("");
     }
   }
   
