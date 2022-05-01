@@ -86,7 +86,7 @@
           <span class="sidebar-text">Trash</span>
         </div>
       </div>
-      <div class="form-container">
+      <div class="form-container inactive-form">
         <form>
           <input class="note-text" type="text" placeholder="Take a note..." />
           <div class="form-actions">
@@ -107,8 +107,18 @@
       </div>
       <div class="form-container active-form">
         <form>
-          <input class="note-title note-text" type="text" placeholder="Title" />
-          <input class="note-text" type="text" placeholder="Take a note..." />
+          <input
+            id="note-title"
+            class="note-title note-text"
+            type="text"
+            placeholder="Title"
+          />
+          <input
+            id="note-text"
+            class="note-text"
+            type="text"
+            placeholder="Take a note..."
+          />
           <div class="form-actions">
             <div class="icons">
               <div class="tooltip">
