@@ -162,16 +162,16 @@
   .active-form{
     display: none;
   }
-  .active-form form{
+  .form{
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 10px;
   }
-  .active-form form .form-actions .icons{
+  .form .form-actions .icons{
     display: flex;
   }
-  .active-form form .form-actions{
+ .form .form-actions{
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -202,6 +202,10 @@
     border: 1px solid #e0e1e0;
     border-radius: 8px;
     position: relative;
+    cursor: pointer;
+  }
+  .note:hover{
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
   }
   .note .title,.text{
     width: 100%;
@@ -211,6 +215,7 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    visibility: hidden;
   }
   .note-footer .material-icons-outlined {
     color: #5f6368;
@@ -219,6 +224,7 @@
     position: absolute;
     left: -10px;
     top: -10px;
+    visibility: hidden;
   }
   /* MODAL CONTENT*/
   .modal{

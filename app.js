@@ -14,11 +14,21 @@ class Note {
       this.$noteTitle = document.querySelector("#note-title");
       this.$noteText = document.querySelector("#note-text");
       this.$notes = document.querySelector(".notes");
+      this.$form = document.querySelector("#form");
      this.addEventListeners();
     }
     addEventListeners(){
         document.body.addEventListener("click", (event) => {
             this.handleFormClick(event);
+        })
+       
+        this.$form.addEventListener("submit" , (event) => {
+            event.preventDefault();
+            const title = this.$noteTitle.value;
+            const text = this.$noteText.value;
+            this.addNote({title , text});
+            this.closeActiveForm();
+            
         })
         
     }
@@ -72,11 +82,27 @@ class Note {
     deleteNote(id) {
       this.notes = this.notes.filter((note) => note.id != id);
     }
+
+    handleMouseOverNote(element) {
+        const $note = document.querySelector("#" + element.id);
+        const $checkNote = $note.querySelector(".check-circle");
+        const $noteFooter = $note.querySelector(".note-footer");
+        $checkNote.style.visibility = "visible";
+        $noteFooter.style.visibility = "visible";
+      }
+      handleMouseOutNote(element) {
+        const $note = document.querySelector("#" + element.id);
+        const $checkNote = $note.querySelector(".check-circle");
+        const $noteFooter = $note.querySelector(".note-footer");
+        $checkNote.style.visibility = "hidden";
+        $noteFooter.style.visibility = "hidden";
+      }
+    
   
     displayNotes() {
       this.$notes.innerHTML = this.notes.map((note) =>
         `
-        <div class="note" id="${note.id}">
+        <div class="note" id="${note.id}" onmouseover="app.handleMouseOverNote(this)" onmouseout="app.handleMouseOutNote(this)">
           <span class="material-icons check-circle">check_circle</span>
           <div class="title">${note.title}</div>
           <div class="text">${note.text}</div>
