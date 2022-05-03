@@ -15,12 +15,16 @@ class Note {
       this.$noteText = document.querySelector("#note-text");
       this.$notes = document.querySelector(".notes");
       this.$form = document.querySelector("#form");
-     this.addEventListeners();
+      this.$modal = document.querySelector(".modal");
+      this.$modalForm = document.querySelector("#modal-form");
+      this.addEventListeners();
     }
     addEventListeners(){
         document.body.addEventListener("click", (event) => {
             this.handleFormClick(event);
-        })
+            this.closeModal(event);
+            this.openModal(event);
+        });
        
         this.$form.addEventListener("submit" , (event) => {
             event.preventDefault();
@@ -59,6 +63,17 @@ class Note {
         this.$noteText.value = "";
         this.$noteTitle.value = "";
     }
+    openModal(event) {
+        if(event.target.closest(".note")) {
+            this.$modal.classList.add("open-modal");
+        }
+    }
+    closeModal(event) {
+        const isModalFormClickedOn = this.$modalForm.contains(event.target);
+        if (!isModalFormClickedOn && this.$modal.classList.contains("open-modal")) {
+          this.$modal.classList.remove("open-modal");
+        }
+      }
 
   
     addNote({ title, text }) {
