@@ -74,6 +74,8 @@ class Note {
             this.$modalTitle.value =$selectedNote.children[1].innerHTML; 
             this.$modalText.value = $selectedNote.children[2].innerHTML; 
             this.$modal.classList.add("open-modal");
+        } else{
+            return;
         }
     }
     closeModal(event) {
