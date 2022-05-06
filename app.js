@@ -7,8 +7,11 @@ class Note {
   }
   class App {
     constructor() {
-      this.notes = [];
+      // localStorage.setItem('test', JSON.stringify(['123']));
+      this.notes = JSON.parse(localStorage.getItem("notes")) || [];
+      console.log(this.notes);
       this.selectedNoteId = "";
+      this.miniSidebar = true;
       
 
       this.$activeForm = document.querySelector(".active-form");
@@ -22,12 +25,15 @@ class Note {
       this.$modalTitle = document.querySelector("#modal-title");
       this.$modalText = document.querySelector("#modal-text");
       this.$closeModalForm = document.querySelector("#modal-btn");
+      this.$sidebar = document.querySelector(".sidebar");
+      this.$sidebarActiveItem = document.querySelector(".active-item");
       this.addEventListeners();
+      this.render();
     }
     addEventListeners(){
         document.body.addEventListener("click", (event) => {
             this.handleFormClick(event);
-            this.closeModal(event);
+          this.closeModal(event);
             this.openModal(event);
             this.handleArchiving(event);
         });
@@ -42,6 +48,12 @@ class Note {
         })
         this.$modalForm.addEventListener("submit" , (event) => {
             event.preventDefault();
+        });
+        this.$sidebar.addEventListener("mouseover" , (event) => {
+           this.handleToggleSidebar(event);
+        });
+        this.$sidebar.addEventListener("mouseout", (event) => {
+          this.handleToggleSidebar(event);
         });
              
     }
@@ -109,7 +121,7 @@ class Note {
         if(text != "") {
             const newNote = new Note(cuid(), title, text);
             this.notes = [...this.notes, newNote];
-            this.displayNotes();
+            this.render();
         }
     }
   
@@ -121,12 +133,12 @@ class Note {
         }
         return note;
       });
-      this.displayNotes();
+      this.render();
     }
   
     deleteNote(id) {
       this.notes = this.notes.filter((note) => note.id != id);
-      this.displayNotes();
+      this.render();
     }
 
     handleMouseOverNote(element) {
@@ -143,6 +155,29 @@ class Note {
         $checkNote.style.visibility = "hidden";
         $noteFooter.style.visibility = "hidden";
       }
+      handleToggleSidebar(event) {
+        if (this.miniSidebar) {
+          this.$sidebar.classList.add("sidebar-hover");
+          this.$sidebarActiveItem.classList.add("sidebar-active-item");
+          this.$sidebar.style.width = "250px";
+          this.miniSidebar = false;
+        } else {
+          this.$sidebar.style.width = "80px";
+          this.miniSidebar = true;
+          this.$sidebar.classList.remove("sidebar-hover");
+          this.$sidebarActiveItem.classList.remove("sidebar-active-item");
+        }
+      }
+
+      saveNotes() {
+        localStorage.setItem("notes", JSON.stringify(this.notes));
+      }
+    
+      render() {
+        this.saveNotes();
+        this.displayNotes();
+      }
+    
     
   
     displayNotes() {
