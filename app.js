@@ -21,6 +21,7 @@ class Note {
       this.$modalForm = document.querySelector("#modal-form");
       this.$modalTitle = document.querySelector("#modal-title");
       this.$modalText = document.querySelector("#modal-text");
+      this.$closeModalForm = document.querySelector("#modal-btn");
       this.addEventListeners();
     }
     addEventListeners(){
@@ -39,6 +40,9 @@ class Note {
             this.closeActiveForm();
             
         })
+        this.$modalForm.addEventListener("submit" , (event) => {
+            event.preventDefault();
+        });
              
     }
     handleFormClick(event){
@@ -81,7 +85,8 @@ class Note {
       }
     closeModal(event) {
     const isModalFormClickedOn = this.$modalForm.contains(event.target);
-    if (!isModalFormClickedOn && this.$modal.classList.contains("open-modal")) {
+    const isCloseModalBtnClickedOn = this.$closeModalForm.contains(event.target);
+    if ((!isModalFormClickedOn || isCloseModalBtnClickedOn) && this.$modal.classList.contains("open-modal")) {
       this.editNote(this.selectedNoteId, {
         title: this.$modalTitle.value,
         text: this.$modalText.value
